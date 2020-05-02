@@ -1,14 +1,15 @@
 export default class AnimaNumeros {
-  constructor(numeros, observerTarget, obseverClass) {
+  constructor(numeros, observerTarget, observerClass) {
     this.numeros = document.querySelectorAll(numeros);
-    this.obseverTarget = document.querySelector(observerTarget);
-    this.obseverClass = obseverClass;
+    this.observerTarget = document.querySelector(observerTarget);
+    this.observerClass = observerClass;
 
+    // bind o this do objeto ao callback da mutação
     this.handleMutation = this.handleMutation.bind(this);
   }
 
-  // Recebe um elemento do dom, com numero em seu texto
-  // incrementa de a partir de 0 até o numero final
+  // Recebe um elemento do dom, com número em seu texto
+  // incrementa a partir de 0 até o número final
   static incrementarNumero(numero) {
     const total = +numero.innerText;
     const incremento = Math.floor(total / 100);
@@ -23,29 +24,29 @@ export default class AnimaNumeros {
     }, 25 * Math.random());
   }
 
-  // ativa incrementar número para cada
+  // Ativa incrementar número para cada
   // número selecionado do dom
   animaNumeros() {
-    this.numeros.forEach((numero) => this.contructor.animaNumeros(numero));
+    this.numeros.forEach(numero => this.constructor.incrementarNumero(numero));
   }
 
-  // ]função que ocorre quando a mutação ocorrer
+  // Função que ocorre quando a mutações ocorrer
   handleMutation(mutation) {
-    if (mutation[0].target.classList.contains(this.obseverClass)) {
+    if (mutation[0].target.classList.contains(this.observerClass)) {
       this.observer.disconnect();
       this.animaNumeros();
     }
   }
 
-  // Adciona o MutationObserver para verificar
-  // quando a classe ativo é adicionada ao elemento target
+  // Adiciona o MutationObserver para verificar
+  // quanto a classe ativo é adiciona ao element target
   addMutationObserver() {
     this.observer = new MutationObserver(this.handleMutation);
     this.observer.observe(this.observerTarget, { attributes: true });
   }
 
   init() {
-    if (this.numeros.length && this.obseverTarget) {
+    if (this.numeros.length && this.observerTarget) {
       this.addMutationObserver();
     }
     return this;
